@@ -2,7 +2,9 @@
 // @name        csgofast_recoder
 // @namespace   de.grzanna-online.ogame
 // @include     https://csgofast.com/
-// @version     1
+// @version     2
+// @updateURL   https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
+// @downloadURL https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 // @grant       none
 // ==/UserScript==
 var storage = localStorage.getItem("csgofast_games");
@@ -70,9 +72,7 @@ function drawTable(games){
         $("div#csgofast_recorder_overview div table tbody").append(
             "<tr>" +
             "<td style='background-color: #182328;'>" + game.gameNum + "</td>" +
-            "<td>" + game.roundHash + "</td>" +
-            "<td style='background-color: #182328;'>" + game.randNum + "</td>" +
-            "<td>" + game.winningTicket + "</td>" +
+            "<td>" + game.randNum + "</td>" +
             "<td style='background-color: #182328;'>" + game.winningPlayer + "</td>" +
             "<td>" + getFormatedDate(new Date(game.date)) + "</td>" +
             "</tr>"
@@ -98,14 +98,12 @@ $(document).ready(function () {
     });
     //console.log(new Date().getTime());
     $("div.wrapper").append(
-        "<div id='csgofast_recorder_overview' class='container' style='position: absolute; top: 0px; left: 399px; z-index: 1000; padding: 29px 29px 22px; background-color: #223138;' >" +
+        "<div id='csgofast_recorder_overview' class='container' style='position: absolute; top: 0px; left: 399px; z-index: 1000; padding: 29px 29px 22px; background-color: #223138; font-size: 9px;' >" +
             "<div>" +
             "<table style='color: white'>" +
                 "<thead><tr>" +
                     "<th style='background-color: #182328;'>gameNum</th>" +
-                    "<th>roundHash</th>" +
-                    "<th style='background-color: #182328;'>randNum</th>" +
-                    "<th>winningTicket</th>" +
+                    "<th>randNum</th>" +
                     "<th style='background-color: #182328;'>winningPlayer</th><th>Date</th>" +
                 "</tr></thead><tbody></tbody>" +
             "</table>" +

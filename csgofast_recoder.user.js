@@ -98,7 +98,7 @@ $(document).ready(function () {
     });
     //console.log(new Date().getTime());
     $("div.wrapper").append(
-        "<div id='csgofast_recorder_overview' class='container' style='position: absolute; top: 0px; left: 399px; z-index: 1000; padding: 29px 29px 22px; background-color: #223138; font-size: 9px;' >" +
+        "<div id='csgofast_recorder_overview' class='container' style='position: absolute; top: 0px; left: 399px; z-index: 1000; padding: 29px 29px 22px; background-color: #223138; font-size: 10px;' >" +
             "<div>" +
             "<table style='color: white'>" +
                 "<thead><tr>" +

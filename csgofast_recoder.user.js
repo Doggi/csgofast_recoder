@@ -32,45 +32,27 @@ function getDiagrammData(date){
     tomorrow.setHours(24);
 
     var keys = Object.keys(games);
+    var label = [];
     var data = [];
 
     for ( var i = keys.length - 1 ; i >= 0 ; i--){
         var d = new Date(games[keys[i]].date);
         if(d >= today && d < tomorrow ) {
+            label.push( getFormatedDate(d) );
             data.push( games[keys[i]].randNum );
         }
     }
-    return data;
+    return {label : label, data: data};
 }
-
+/*
 var today = new Date();
 var yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
 var beforeYesterday = new Date(yesterday); beforeYesterday.setDate(yesterday.getDate()-1);
 
+var diagram = getDiagrammData(yesterday);
 var lineChartData = {
-    labels : [  "00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00",
-                "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"],
+    labels : diagram.label,
     datasets : [
-        {
-            label: "My First dataset",
-            fillColor : "rgba(220,220,220,0.2)",
-            strokeColor : "rgba(220,220,220,1)",
-            pointColor : "rgba(220,220,220,1)",
-            pointStrokeColor : "#fff",
-            pointHighlightFill : "#fff",
-            pointHighlightStroke : "rgba(220,220,220,1)",
-            data : getDiagrammData(beforeYesterday)
-        },
-        {
-            label: "My Second dataset",
-            fillColor : "rgba(151,187,205,0.2)",
-            strokeColor : "rgba(151,187,205,1)",
-            pointColor : "rgba(151,187,205,1)",
-            pointStrokeColor : "#fff",
-            pointHighlightFill : "#fff",
-            pointHighlightStroke : "rgba(151,187,205,1)",
-            data : getDiagrammData(yesterday)
-        },
         {
             label: "My Second dataset",
             fillColor : "rgba(0,0,0,0.2)",
@@ -79,10 +61,14 @@ var lineChartData = {
             pointStrokeColor : "#000",
             pointHighlightFill : "#000",
             pointHighlightStroke : "rgba(0,0,0,1)",
-            data : getDiagrammData(today)
+            data : diagram.data
         }
     ]
 };
+
+*/
+
+
 
 console.log(games);
 
@@ -122,6 +108,7 @@ var observer = new MutationObserver(function (mutations) {
         console.log(result);
         games[String(result.gameNum)] = result;
         drawTable(games);
+        drawDiagram(games);
         localStorage.setItem("csgofast_games", JSON.stringify(games));
     });
 });
@@ -162,6 +149,36 @@ function drawTable(games){
     }
 }
 
+function drawDiagram(games){
+    var keys = Object.keys(games);
+    var label = [];
+    var data = [];
+
+    for ( var i = keys.length - 1 ; i >= Math.max(0, keys.length-20) ; i--){
+        data.push( games[keys[i]].randNum );
+        label.push( games[keys[i]].gameNum );
+    }
+
+    var ctx = document.getElementById("csgofast_recorder_overview_diagram").getContext("2d");
+    window.myLine = new Chart(ctx).Line({
+        labels : label.reverse(),
+        datasets : [
+            {
+                label: "My Second dataset",
+                fillColor : "rgba(0,0,0,0.2)",
+                strokeColor : "rgba(0,0,0,1)",
+                pointColor : "rgba(0,0,0,0.2)",
+                pointStrokeColor : "#000",
+                pointHighlightFill : "#000",
+                pointHighlightStroke : "rgba(0,0,0,1)",
+                data : data.reverse()
+            }
+        ]
+    }, {
+        responsive: false
+    });
+}
+
 $(document).ready(function () {
     $("#randNum").waitUntilExists(function () {
         console.log("starting...");
@@ -182,7 +199,12 @@ $(document).ready(function () {
                     "</tr></thead><tbody></tbody>" +
                 "</table>" +
                 "<canvas id='csgofast_recorder_overview_diagram' height='325' width='556' style='float: left;'></canvas>" +
+                "<div id='csgofast_recorder_overview_import_export' style='display: none;'>" +
+                    "<textarea id='csgofast_recorder_imexport' style='font-size: 8px; width: 1156px; padding: 0;'></textarea>" +
+                    "<input id='csgofast_recorder_overview_import' type='button' value='import' /> <input id='csgofast_recorder_overview_export' type='button' value='export'/>" +
+                "</div>" +
             "<div style='clear: both;'></div>" +
+            "<a id='csgofast_recorder_import_export' href='#' style='text-decoration: none; color: white; background-color: #182328;'>import / export</a> " +
             "</div>" +
                 "<div id='csgofast_recoder_overview_toggler' data-direction='up' style='text-align: right; color: black;'>" +
                     "<a id='csgofast_recorder_overview_up' href='#' style='text-decoration: none; color: white; background-color: #182328;'>&uarr;</a>" +
@@ -192,9 +214,21 @@ $(document).ready(function () {
         "</div>"
     );
 
-    var ctx = document.getElementById("csgofast_recorder_overview_diagram").getContext("2d");
-    window.myLine = new Chart(ctx).Line(lineChartData, {
-        responsive: false
+    $("input#csgofast_recorder_overview_import").click(function(){
+        var json = $("textarea#csgofast_recorder_imexport").val();
+        var data = JSON.parse(json);
+
+        for(d in data){
+            console.log(d);
+        }
+    });
+
+    $("input#csgofast_recorder_overview_export").click(function(){
+        $("textarea#csgofast_recorder_imexport").val( JSON.stringify(games) );
+    });
+
+    $("a#csgofast_recorder_import_export").click(function(){
+        $("div#csgofast_recorder_overview_import_export").toggle();
     });
 
     $("div#csgofast_recoder_overview_toggler a#csgofast_recorder_overview_up, div#csgofast_recoder_overview_toggler a#csgofast_recorder_overview_down").click(function(){
@@ -211,6 +245,7 @@ $(document).ready(function () {
         return false;
     });
     drawTable(games);
+    drawDiagram(games);
 });
 
 

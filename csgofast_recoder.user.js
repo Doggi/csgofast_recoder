@@ -5,13 +5,21 @@
 // @version     3
 // @updateURL   https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 // @downloadURL https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
-// @grant       none
+// @grant       GM_xmlhttpRequest
 // ==/UserScript==
 var storage = localStorage.getItem("csgofast_games");
 var games = JSON.parse(storage);
 if( games == null ){
     games = {};
 }
+
+GM_xmlhttpRequest({
+    method: "GET",
+    url: "http://www.example.com/",
+    onload: function(response) {
+        alert(response.responseText);
+    }
+});
 
 /*!
  * Chart.js

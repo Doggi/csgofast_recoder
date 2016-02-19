@@ -2,12 +2,12 @@
 // @name        csgofast_recoder
 // @namespace   de.grzanna-online.ogame
 // @include     https://csgofast.com/
-// @version     5
+// @version     6
 // @updateURL   https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 // @downloadURL https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
+//
 // @require     https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js
 // @require     https://raw.githubusercontent.com/nnnick/Chart.js/master/Chart.min.js
-// @resource    jQueryUICss https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceURL
 // @grant       GM_addStyle
@@ -18,8 +18,6 @@ var games = JSON.parse(storage);
 if( games == null ){
     games = {};
 }
-
-GM_addStyle(GM_getResourceText("jQueryUICss"));
 
 function getDiagrammData(date){
     var today=new Date(date);
@@ -39,6 +37,47 @@ function getDiagrammData(date){
         }
     }
     return {label : label, data: data};
+}
+
+function loadGames(){
+    GM_xmlhttpRequest({
+        method: "GET",
+        headers: {"Accept": "application/json"},
+        url: "http://csgofast.grzanna-online.de/games",
+        onload: function(response){
+            console.log(response.responseText)
+            //games = JSON.parse(response.responseText);
+        },
+        onerror: function(response){
+            console.log(response);
+        }
+    });
+}
+
+function sendGame(game){
+    var g = {
+        gameNum: game.gameNum,
+        roundHash: game.roundHash,
+        randNum: game.randNum,
+        winningTicket: game.winningTicket,
+        winningPlayer: game.winningPlayer,
+        date: getFormatedDateRest(new Date(game.date)),
+        user: game.user
+    };
+
+    GM_xmlhttpRequest({
+        method: "POST",
+        headers: {"Accept": "application/json", "Content-Type": "application/json"},
+        data: JSON.stringify(g),
+        url: "http://csgofast.grzanna-online.de/games",
+        onload: function(response){
+            console.log(response.responseText);
+        },
+        onerror: function(response){
+            response = JSON.parse(response);
+            console.log(response.name);
+        }
+    });
 }
 
 /**
@@ -75,6 +114,7 @@ var observer = new MutationObserver(function (mutations) {
         var result = read();
         console.log(result);
         games[String(result.gameNum)] = result;
+        sendGame(result);
         drawTable(games);
         drawDiagram(games);
         localStorage.setItem("csgofast_games", JSON.stringify(games));
@@ -87,6 +127,17 @@ var observerConfig = {
     childList: true,
     characterData: true
 };
+
+function getFormatedDateRest(d){
+    var string = "";
+    string += d.getFullYear(); string+= "-";
+    string += ( d.getMonth() < 10 ) ? "0"+ d.getMonth() : d.getMonth(); string+= "-";
+    string += ( d.getDate() < 10 ) ? "0"+ d.getDate() : d.getDate(); string+= " ";
+    string += ( d.getHours() < 10 ) ? "0"+ d.getHours() : d.getHours(); string+= ":";
+    string += ( d.getMinutes() < 10 ) ? "0"+ d.getMinutes() : d.getMinutes(); string+= ":";
+    string += ( d.getSeconds() < 10 ) ? "0"+ d.getSeconds() : d.getSeconds();
+    return string;
+}
 
 function getFormatedDate(d){
     var string = "";
@@ -154,11 +205,11 @@ $(document).ready(function () {
     });
     //console.log(new Date().getTime());
     $("div.wrapper").append(
-        "<div id='csgofast_recorder_overview' class='container' style='position: absolute; top: 0px; left: 399px; z-index: 1000; padding: 5px; background-color: #2CB8D6; font-size: 11px;' >" +
+        "<div id='csgofast_recorder_overview' class='container ui-corner-bottom' style='position: absolute; top: 0px; left: 399px; z-index: 1000; padding: 5px; background-color: #2CB8D6; font-size: 11px;' >" +
         "<div style='text-align: center'>CSGO FAST RECORDER</div>" +
         "<div>" +
         "<div id='close'>" +
-        "<table style='color: white; width: 600px; float: left;'>" +
+        "<table class='table table-bordered' style='color: white; width: 600px; float: left;'>" +
         "<thead><tr>" +
         "<th style='background-color: #182328; width: 60px;'>gameNum</th>" +
         "<th style='background-color: #223138; width: 120px;'>randNum</th>" +
@@ -198,19 +249,6 @@ $(document).ready(function () {
         $("div#csgofast_recorder_overview_import_export").toggle();
     });
 
-    $("div#csgofast_recoder_overview_toggler a#csgofast_recorder_overview_up, div#csgofast_recoder_overview_toggler a#csgofast_recorder_overview_down").click(function(){
-        if( $("#csgofast_recoder_overview_toggler").data("direction") == "up" ){
-            $("#csgofast_recoder_overview_toggler").data("direction", "down");
-            $("div#csgofast_recorder_overview div#close, #csgofast_recorder_overview_up").hide();
-            $("#csgofast_recorder_overview_down").show();
-        } else {
-            $("#csgofast_recoder_overview_toggler").data("direction", "up");
-            $("div#csgofast_recorder_overview div#close, #csgofast_recorder_overview_up").show();
-            $("#csgofast_recorder_overview_down").hide();
-        }
-        console.log("click", $("csgofast_recoder_overview_toggler").data("direction"));
-        return false;
-    });
     drawTable(games);
     drawDiagram(games);
 });
@@ -226,21 +264,4 @@ function read() {
         user: $(".user-menu-name").html() || "no login"
     };
     return result;
-}
-
-function send(result, callback) {
-    $.ajax({
-        url: "http://recorder.csgofast.com/rest/",
-        data: result,
-        crossDomain: true,
-        dataType: 'json',
-        method: "POST",
-        success: function (data, status, jqxhr) {
-            console.log(data, status, jqxhr);
-            callback();
-        },
-        error: function(jqxhr, textStatus, error){
-            console.error(data, status, jqxhr);
-        }
-    });
 }

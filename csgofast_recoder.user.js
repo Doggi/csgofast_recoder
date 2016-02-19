@@ -2,7 +2,7 @@
 // @name        csgofast_recoder
 // @namespace   de.grzanna-online.ogame
 // @include     https://csgofast.com/
-// @version     6
+// @version     7
 // @updateURL   https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 // @downloadURL https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 //
@@ -71,7 +71,7 @@ function sendGame(game){
         data: JSON.stringify(g),
         url: "http://csgofast.grzanna-online.de/games",
         onload: function(response){
-            console.log(response.responseText);
+            console.log(response);
         },
         onerror: function(response){
             response = JSON.parse(response);
@@ -239,6 +239,23 @@ $(document).ready(function () {
         for(d in data){
             console.log(d);
         }
+    });
+
+    $("a#csgofast_recorder_import_export").click(function(){
+        $("div#csgofast_recorder_overview_import_export").toggle();
+    });
+
+    $("div#csgofast_recoder_overview_toggler a#csgofast_recorder_overview_up, div#csgofast_recoder_overview_toggler a#csgofast_recorder_overview_down").click(function(){
+        if( $("#csgofast_recoder_overview_toggler").data("direction") == "up" ){
+            $("#csgofast_recoder_overview_toggler").data("direction", "down");
+            $("div#csgofast_recorder_overview div#close, #csgofast_recorder_overview_up").hide();
+            $("#csgofast_recorder_overview_down").show();
+        } else {
+            $("#csgofast_recoder_overview_toggler").data("direction", "up");
+            $("div#csgofast_recorder_overview div#close, #csgofast_recorder_overview_up").show();
+            $("#csgofast_recorder_overview_down").hide();
+        }
+        return false;
     });
 
     $("input#csgofast_recorder_overview_export").click(function(){

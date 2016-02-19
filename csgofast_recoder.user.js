@@ -2,7 +2,7 @@
 // @name        csgofast_recoder
 // @namespace   de.grzanna-online.ogame
 // @include     https://csgofast.com/
-// @version     7
+// @version     8
 // @updateURL   https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 // @downloadURL https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 //

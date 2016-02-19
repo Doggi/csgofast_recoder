@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        csgofast_recoder
-// @namespace   de.grzanna-online.ogame
+// @namespace   de.grzanna-online.csgofast_recorder
 // @include     https://csgofast.com/
 // @version     1.0.1
 // @updateURL   https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js

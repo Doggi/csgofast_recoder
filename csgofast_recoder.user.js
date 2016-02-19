@@ -8,7 +8,7 @@
 //
 // @require     https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js
 // @require     https://raw.githubusercontent.com/nnnick/Chart.js/master/Chart.min.js
-// @resource    layout https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recorder_layout.html
+// @resource    layout https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recorder_overview.html
 // @resource    css https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recorder.css
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle

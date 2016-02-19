@@ -2,14 +2,16 @@
 // @name        csgofast_recoder
 // @namespace   de.grzanna-online.ogame
 // @include     https://csgofast.com/
-// @version     8
+// @version     1.0.1
 // @updateURL   https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 // @downloadURL https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recoder.user.js
 //
 // @require     https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js
 // @require     https://raw.githubusercontent.com/nnnick/Chart.js/master/Chart.min.js
-// @resource    layout https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recorder_overview.html
-// @resource    css https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recorder.css
+//
+// @resource    csgofast_recorder_layout layout https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recorder_overview.html
+// @resource    csgofast_recorder_css https://github.com/Doggi/csgofast_recoder/raw/master/csgofast_recorder.css
+//
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
 // @grant       GM_getResourceText
@@ -22,8 +24,7 @@ if( games == null ){
     games = {};
 }
 
-var css = GM_getResourceText("css");
-var layout =  GM_getResourceText("layout");
+//GM_addStyle(GM_getResourceText("csgofast_recorder_css"));
 
 // loading
 

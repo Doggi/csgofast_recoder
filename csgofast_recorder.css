@@ -3,3 +3,43 @@
     width: 600px;
     float: left;
 }
+
+#csgofast_recorder_table .dark {
+    background-color: #182328;
+}
+
+#csgofast_recorder_table .light {
+    background-color: #223138;
+}
+
+#csgofast_recorder_overview {
+    position: absolute;
+    top: 0px;
+    left: 361px;
+    z-index: 1000;
+    padding: 5px;
+    background-color: #2CB8D6;
+    font-size: 11px;
+}
+
+#csgofast_recoder_overview_toggler {
+    text-align: right;
+    color: black;
+}
+
+#csgofast_recorder_overview_up, #csgofast_recorder_overview_down {
+    text-decoration: none;
+    color: white;
+    background-color: #182328;
+    display: block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    float: right;
+}
+
+#csgofast_recorder_header {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 13px;
+}

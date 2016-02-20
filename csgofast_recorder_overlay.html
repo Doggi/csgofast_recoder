@@ -1,15 +1,19 @@
-<div id="csgofast_recorder_overview" class="container ui-corner-bottom"
-     style="position: absolute; top: 0px; left: 399px; z-index: 1000; padding: 5px; background-color: #2CB8D6; font-size: 11px;">
-    <div style="text-align: center">CSGO FAST RECORDER</div>
+<div id="csgofast_recorder_overview" class="container ui-corner-bottom">
+    <div id="csgofast_recorder_header">
+        csgo fast recorder
+        <a id="csgofast_recorder_overview_down" class="ui-corner-all" href="#" style="display: none;">&darr;</a>
+        <div style="clear: both;"></div>
+    </div>
+
     <div>
         <div id="close">
-            <table id="csgofast_recorder_table" style="">
+            <table id="csgofast_recorder_table">
                 <thead>
                 <tr>
-                    <th style="background-color: #182328; width: 60px;">gameNum</th>
-                    <th style="background-color: #223138; width: 120px;">randNum</th>
-                    <th style="background-color: #182328; width: 300px;">winningPlayer</th>
-                    <th style="background-color: #223138; width: 150px;">Date</th>
+                    <th class="dark" style="width: 60px;">gameNum</th>
+                    <th class="light" style="width: 120px;">randNum</th>
+                    <th class="dark" style="width: 300px;">winningPlayer</th>
+                    <th class="light" style="width: 150px;">Date</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -22,11 +26,9 @@
             </div>
             <div style="clear: both;"></div>
         </div>
-        <div id="csgofast_recoder_overview_toggler" data-direction="up" style="text-align: right; color: black;">
-            <a id="csgofast_recorder_overview_up" class="ui-state-default ui-corner-all ui-state-hover" href="#"
-               style="text-decoration: none; color: white; background-color: #182328;">&uarr;</a>
-            <a id="csgofast_recorder_overview_down" class="ui-state-default ui-corner-all ui-state-hover" href="#"
-               style="display: none;text-decoration: none;color: white; background-color: #182328;">&darr;</a>
+        <div id="csgofast_recoder_overview_toggler" data-direction="up">
+            <a id="csgofast_recorder_overview_up" class="ui-corner-all" href="#">&uarr;</a>
+            <div style="clear: both;"></div>
         </div>
     </div>
 </div>
